@@ -1,0 +1,13 @@
+{
+    "url_login" : "https://www.flevoschutters.nl/competitie/login/",
+    "urls_scores" : [
+        "https://www.flevoschutters.nl/competitie/get-score/discipline/1",
+        "https://www.flevoschutters.nl/competitie/get-score/discipline/2",
+        "https://www.flevoschutters.nl/competitie/get-score/discipline/3",
+        "https://www.flevoschutters.nl/competitie/get-score/discipline/19"
+    ],
+    "credentials": {
+        "username": "194101",
+        "password": "tuSSenStand?"
+    }
+}
