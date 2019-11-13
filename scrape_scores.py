@@ -3,14 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
 
-login_url = 'https://www.flevoschutters.nl/competitie/login/'
-score_urls = [
-        'https://www.flevoschutters.nl/competitie/get-score/discipline/1',
-        'https://www.flevoschutters.nl/competitie/get-score/discipline/2',
-        'https://www.flevoschutters.nl/competitie/get-score/discipline/3',
-        'https://www.flevoschutters.nl/competitie/get-score/discipline/19'
-        ]
-
 session = requests.Session()
 
 
@@ -21,7 +13,7 @@ def get_config():
     return conf
 
 
-def login(username, password):
+def login(login_url, username, password):
     _login = session.get(login_url, allow_redirects=False)
     values = {'user': username, 'pass': password}
     session.cookies = _login.cookies
@@ -49,8 +41,8 @@ def scrape_table(table):
         print(f'{score["rank"]} - avg score {score["score"]} -  {score["name"]}')
 
 
-def scrape_discipline(url):
-    s = session.get(url)
+def scrape_discipline(score_url):
+    s = session.get(score_url)
     soup = BeautifulSoup(s.text, 'html.parser')
     tables = soup.find_all('table')
     for table in tables:
@@ -59,6 +51,6 @@ def scrape_discipline(url):
 
 # Here start the calls
 config = get_config()
-login(config['credentials']['username'], config['credentials']['password'])
-for score_url in score_urls:
-    scrape_discipline(score_url)
+login(config['url_login'], config['credentials']['username'], config['credentials']['password'])
+for url in config['urls_scores']:
+    scrape_discipline(url)
