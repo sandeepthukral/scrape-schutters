@@ -5,7 +5,6 @@ from pathlib import Path
 
 session = requests.Session()
 
-
 def get_config():
     config_path = Path(__file__).parent.joinpath('config.json')
     with config_path.open() as config_contents:

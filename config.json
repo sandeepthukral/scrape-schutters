@@ -6,6 +6,7 @@
         "https://www.flevoschutters.nl/competitie/get-score/discipline/3",
         "https://www.flevoschutters.nl/competitie/get-score/discipline/19"
     ],
+    "url_reservation": "https://www.flevoschutters.nl/competitie/range-schedule",
     "credentials": {
         "username": "",
         "password": ""
