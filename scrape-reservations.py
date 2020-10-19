@@ -1,7 +1,6 @@
-import json
 import requests
 from bs4 import BeautifulSoup
-from pathlib import Path
+import utilities
 
 ignore_texts = [
     "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", 
@@ -11,25 +10,8 @@ ignore_texts = [
     "Niet beschikbaar", "Reserveer als BC", "Reserveren", "Gereserveerd voor instroom !!BC!!", "Wacht op BC", "Niet in gebruik"
 ]
 
-session = requests.Session()
-
-def get_config():
-    config_path = Path(__file__).parent.joinpath('config.json')
-    with config_path.open() as config_contents:
-        conf = json.load(config_contents)
-    return conf
-
-
-def login(login_url, username, password):
-    _login = session.get(login_url, allow_redirects=False)
-    values = {'user': username, 'pass': password}
-    session.cookies = _login.cookies
-    session.get(login_url)
-    session.post(login_url, data=values, cookies=_login.cookies)
-
-
 def scrape_page(url):
-
+    session = utilities.get_logged_in_session()
     s = session.get(url)
     soup = BeautifulSoup(s.text, 'html.parser')
 
@@ -52,8 +34,7 @@ def scrape_page(url):
     return sorted(names)
 
 # Here start the calls
-config = get_config()
-login(config['url_login'], config['credentials']['username'], config['credentials']['password'])
+config = utilities.get_config()
 all_names = scrape_page(config['url_reservation'])
 print('The following users are registered to shoot')
 for name in all_names:

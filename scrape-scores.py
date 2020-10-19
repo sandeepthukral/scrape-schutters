@@ -1,24 +1,9 @@
-import json
 import requests
 from bs4 import BeautifulSoup
-from pathlib import Path
+
+import utilities
 
 session = requests.Session()
-
-def get_config():
-    config_path = Path(__file__).parent.joinpath('config.json')
-    with config_path.open() as config_contents:
-        conf = json.load(config_contents)
-    return conf
-
-
-def login(login_url, username, password):
-    _login = session.get(login_url, allow_redirects=False)
-    values = {'user': username, 'pass': password}
-    session.cookies = _login.cookies
-    session.get(login_url)
-    session.post(login_url, data=values, cookies=_login.cookies)
-
 
 def scrape_table(table):
     trs = table.find_all('tr')
@@ -49,7 +34,7 @@ def scrape_discipline(score_url):
 
 
 # Here start the calls
-config = get_config()
-login(config['url_login'], config['credentials']['username'], config['credentials']['password'])
+config = utilities.get_config()
+session = utilities.get_logged_in_session()
 for url in config['urls_scores']:
     scrape_discipline(url)
